@@ -1,17 +1,13 @@
 {
   "name": "electron_react_quick_start",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
+    "electron-is-dev": "^2.0.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.1"
+    "react-dom": "^17.0.2"
   },
-  "main": "src/electron-starter.js",
+  "main": "public/electron.js",
   "scripts": {
     "react-start": "react-scripts start",
     "react-build": "react-scripts build",
@@ -45,16 +41,14 @@
     "concurrently": "^6.0.2",
     "electron": "^12.0.5",
     "electron-builder": "^22.10.5",
-    "wait-on": "^5.3.0"
+    "wait-on": "^5.3.0",
+    "react-scripts": "^4.0.3"
   },
   "build": {
     "appId": "com.example.electron-app",
     "files": [
       "build/**/*",
       "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
+    ]
   }
 }

@@ -1,23 +1,16 @@
-import logo from "./logo.svg";
+import React, { Component, useState } from "react";
 import "./App.css";
 
 function App() {
+  const receiveMessage = window.communication.receive();
+  window.communication.send("send Message");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header></header>
+      <div className="card">
+        <h1>{receiveMessage}</h1>
+      </div>
     </div>
   );
 }

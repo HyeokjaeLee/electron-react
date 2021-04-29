@@ -1,29 +1,39 @@
-const { app, BrowserWindow } = require("electron");
+const electron = require("electron");
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
+const isDev = require("electron-is-dev");
+let win;
 
-app.whenReady().then(() => {
-  let win = new BrowserWindow({
-    show: false,
+async function createWindow() {
+  win = new BrowserWindow({
+    width: 1200,
+    height: 1000,
     webPreferences: {
-      enableRemoteModule: true,
-      preload: `${__dirname}/preload.js`,
+      nodeIntegration: false, // is default value after Electron v5
+      preload: path.join(__dirname, "preload.js"), // use a preload script
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
     },
   });
-  console.log(process.env);
-  if (process.env.mode === "dev") {
-    win.loadURL("http://localhost:3000");
-    win.webContents.openDevTools();
-  } else {
-    // win.loadURL(`file://${path.join(__dirname, '../build/index.html')}`)
-    win.loadFile(`${path.join(__dirname, "../build/index.html")}`);
-  }
+  win.loadURL(
+    isDev
+      ? "http://localhost:3000"
+      : `file://${path.join(__dirname, "../build/index.html")}`
+  );
+  win.on("closed", () => (win = null));
+}
 
-  win.once("ready-to-show", () => win.show());
-  win.on("closed", () => {
-    win = null;
-  });
-});
+app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
-  app.quit();
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
+
+app.on("activate", () => {
+  if (win === null) {
+    createWindow();
+  }
 });

@@ -1,8 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
+const { contextBridge } = require("electron");
 
-const App = () => {
-  return <div>hello world</div>;
-};
-
-ReactDOM.render(<App />, document.getElementById("root"));
+// Expose protected methods that allow the renderer process to use
+// the ipcRenderer without exposing the entire object
+contextBridge.exposeInMainWorld("communication", {
+  send: (message) => {
+    console.log(message);
+  },
+  receive: () => "receive message",
+});
