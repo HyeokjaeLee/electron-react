@@ -1,10 +1,12 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const receiveMessage = window.communication.receive();
-  window.communication.send("send Message");
-
+  const [receiveMessage, setReceiveMessage] = useState(undefined);
+  window.api.send("toElectron", "I'm in React");
+  window.api.receive("fromElectron", (data) => {
+    setReceiveMessage(data);
+  });
   return (
     <div className="App">
       <header></header>

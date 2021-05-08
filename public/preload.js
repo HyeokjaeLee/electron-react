@@ -1,10 +1,13 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
-contextBridge.exposeInMainWorld("communication", {
-  send: (message) => {
-    console.log(message);
+
+contextBridge.exposeInMainWorld("api", {
+  send: (channel, data) => {
+    ipcRenderer.send(channel, data);
   },
-  receive: () => "receive message",
+  receive: (channel, func) => {
+    ipcRenderer.on(channel, (event, ...args) => func(...args));
+  },
 });
